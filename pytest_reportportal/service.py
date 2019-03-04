@@ -1,19 +1,17 @@
 import logging
+import pkg_resources
+import pytest
 import sys
 import traceback
-import pytest
-import pkg_resources
-
-from time import time
-from six import with_metaclass
-from six.moves import queue
-
-from _pytest.main import Session
-from _pytest.python import Class, Function, Instance, Module
 from _pytest.doctest import DoctestItem
+from _pytest.main import Session
 from _pytest.nodes import File, Item
+from _pytest.python import Class, Function, Instance, Module
 from _pytest.unittest import TestCaseFunction, UnitTestCase
 from reportportal_client import ReportPortalServiceAsync
+from six import with_metaclass
+from six.moves import queue
+from time import time
 
 log = logging.getLogger(__name__)
 
@@ -129,7 +127,6 @@ class PyTestServiceClass(with_metaclass(Singleton, object)):
         log.debug('ReportPortal - Start launch: equest_body=%s', sl_pt)
         req_data = self.RP.start_launch(**sl_pt)
         log.debug('ReportPortal - Launch started: response_body=%s', req_data)
-
 
     def collect_tests(self, session):
         self._stop_if_necessary()
@@ -249,7 +246,6 @@ class PyTestServiceClass(with_metaclass(Singleton, object)):
             log.debug('ReportPortal - End TestSuite: request_body=%s', payload)
             self.RP.finish_test_item(**payload)
 
-
     def finish_launch(self, launch=None, status='rp_launch'):
         self._stop_if_necessary()
         if self.RP is None:
@@ -347,7 +343,8 @@ class PyTestServiceClass(with_metaclass(Singleton, object)):
                 if test_fullname in tests_parts:
                     item_test = tests_parts[test_fullname]
                 else:
-                    item_test = Item(test_fullname, nodeid=test_fullname, session=item.session, config=item.session.config)
+                    item_test = Item(test_fullname, nodeid=test_fullname, session=item.session,
+                                     config=item.session.config)
                     item_test._rp_name = rp_name
                     item_test.obj = item.obj
                     item_test.keywords = item.keywords
@@ -453,8 +450,7 @@ class PyTestServiceClass(with_metaclass(Singleton, object)):
             name = name[:256]
             test_item.warn(
                 'C1',
-                'Test node ID was truncated to "{}" because of name size '
-                'constrains on reportportal'.format(str(name))
+                'Test node ID was truncated to ' + str(name) + ' because of name size constrains on reportportal'
             )
         return name
 
