@@ -448,6 +448,7 @@ class PyTestServiceClass(with_metaclass(Singleton, object)):
         name = test_item._rp_name
         if len(name) > 256:
             name = name[:256]
+            print(name)
             test_item.warn(
                 'C1',
                 'Test node ID was truncated to ' + str(name) + ' because of name size constrains on reportportal'
