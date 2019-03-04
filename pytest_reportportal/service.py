@@ -454,7 +454,7 @@ class PyTestServiceClass(with_metaclass(Singleton, object)):
             test_item.warn(
                 'C1',
                 'Test node ID was truncated to "{}" because of name size '
-                'constrains on reportportal'.format(name)
+                'constrains on reportportal'.format(str(name))
             )
         return name
 
